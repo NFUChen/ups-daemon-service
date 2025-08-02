@@ -1,0 +1,27 @@
+[Unit]
+Description=CyberPower UPS Monitor Daemon
+Documentation=https://github.com/username/ups-monitor
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /usr/local/bin/ups_monitor_daemon.py
+Restart=always
+RestartSec=10
+User=root
+Group=root
+StandardOutput=append:/var/log/ups_monitor.log
+StandardError=append:/var/log/ups_monitor.log
+
+# 安全設定
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ReadWritePaths=/var/log
+
+# 環境變數
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target

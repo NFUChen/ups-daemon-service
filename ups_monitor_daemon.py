@@ -13,7 +13,7 @@ from datetime import datetime
 
 EVENT_LOG_FILE = "/var/log/ups_monitor_event.json"
 LOG_OUTPUT_FILE = "/var/log/ups_monitor.log"
-CHECK_INTERVAL_SECONDS = 60
+CHECK_INTERVAL_SECONDS = 10
 
 def to_camel_case(s):
     """將字串轉換為駝峰命名"""

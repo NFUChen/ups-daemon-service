@@ -30,23 +30,23 @@ install: check
 	@echo "安装 UPS Monitor Daemon..."
 	
 	# 安装 Python 脚本
-	sudo cp $(DAEMON_SCRIPT) $(SCRIPT_INSTALL_PATH)
-	sudo chmod 755 $(SCRIPT_INSTALL_PATH)
-	sudo chown root:root $(SCRIPT_INSTALL_PATH)
+	cp $(DAEMON_SCRIPT) $(SCRIPT_INSTALL_PATH)
+	chmod 755 $(SCRIPT_INSTALL_PATH)
+	chown root:root $(SCRIPT_INSTALL_PATH)
 	
 	# 安装 systemd service
-	sudo cp $(SERVICE_FILE) $(SERVICE_INSTALL_PATH)
-	sudo chmod 644 $(SERVICE_INSTALL_PATH)
-	sudo chown root:root $(SERVICE_INSTALL_PATH)
+	cp $(SERVICE_FILE) $(SERVICE_INSTALL_PATH)
+	chmod 644 $(SERVICE_INSTALL_PATH)
+	chown root:root $(SERVICE_INSTALL_PATH)
 	
 	# 创建日志文件和目录
-	sudo touch $(LOG_FILE)
-	sudo touch $(EVENT_LOG_FILE)
-	sudo chmod 644 $(LOG_FILE) $(EVENT_LOG_FILE)
-	sudo chown root:root $(LOG_FILE) $(EVENT_LOG_FILE)
+	touch $(LOG_FILE)
+	touch $(EVENT_LOG_FILE)
+	chmod 644 $(LOG_FILE) $(EVENT_LOG_FILE)
+	chown root:root $(LOG_FILE) $(EVENT_LOG_FILE)
 	
 	# 重新載入 systemd
-	sudo systemctl daemon-reload
+	systemctl daemon-reload
 	
 	@echo "安装完成!"
 	@echo "使用以下命令启用并启动服务:"
@@ -55,66 +55,66 @@ install: check
 
 # 启用服务 (开机自启)
 enable:
-	sudo systemctl enable $(SERVICE_NAME).service
+	systemctl enable $(SERVICE_NAME).service
 	@echo "服务已设置为开机自启"
 
 # 禁用服务 (取消开机自启)
 disable:
-	sudo systemctl disable $(SERVICE_NAME).service
+	systemctl disable $(SERVICE_NAME).service
 	@echo "服务已取消开机自启"
 
 # 啟動服務
 start:
-	sudo systemctl start $(SERVICE_NAME).service
+	systemctl start $(SERVICE_NAME).service
 	@echo "服務已啟動"
 
 # 停止服務
 stop:
-	sudo systemctl stop $(SERVICE_NAME).service
+	systemctl stop $(SERVICE_NAME).service
 	@echo "服務已停止"
 
 # 重啟服務
 restart:
-	sudo systemctl restart $(SERVICE_NAME).service
+	systemctl restart $(SERVICE_NAME).service
 	@echo "服務已重啟"
 
 # 檢視服務狀態
 status:
-	sudo systemctl status $(SERVICE_NAME).service
+	systemctl status $(SERVICE_NAME).service
 
 # 檢視即時日誌
 logs:
-	sudo journalctl -u $(SERVICE_NAME).service -f
+	journalctl -u $(SERVICE_NAME).service -f
 
 # 檢視最近的日誌
 logs-recent:
-	sudo journalctl -u $(SERVICE_NAME).service -n 50
+	journalctl -u $(SERVICE_NAME).service -n 50
 
 # 檢視應用日誌檔案
 logs-file:
-	sudo tail -f $(LOG_FILE)
+	tail -f $(LOG_FILE)
 
 # 卸載守護程序
 uninstall:
 	@echo "卸載 UPS Monitor Daemon..."
 	
 	# 停止並禁用服務
-	-sudo systemctl stop $(SERVICE_NAME).service
-	-sudo systemctl disable $(SERVICE_NAME).service
+	-systemctl stop $(SERVICE_NAME).service
+	-systemctl disable $(SERVICE_NAME).service
 	
 	# 刪除檔案
-	-sudo rm -f $(SCRIPT_INSTALL_PATH)
-	-sudo rm -f $(SERVICE_INSTALL_PATH)
+	-rm -f $(SCRIPT_INSTALL_PATH)
+	-rm -f $(SERVICE_INSTALL_PATH)
 	
 	# 重新載入 systemd
-	sudo systemctl daemon-reload
+	systemctl daemon-reload
 	
 	@echo "卸載完成!"
 	@echo "注意: 日誌檔案保留在 $(LOG_FILE) 和 $(EVENT_LOG_FILE)"
 
 # 清理日誌檔案
 clean-logs:
-	sudo rm -f $(LOG_FILE) $(EVENT_LOG_FILE)
+	rm -f $(LOG_FILE) $(EVENT_LOG_FILE)
 	@echo "日誌檔案已清理"
 
 # 完全清理 (包括日誌)
